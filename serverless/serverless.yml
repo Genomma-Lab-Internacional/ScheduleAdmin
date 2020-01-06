@@ -10,6 +10,7 @@ package:
 
 provider:
   name: aws
+  apiName: Miscelanea
   runtime: nodejs12.x
   stage: dev
   region: us-east-1
@@ -33,5 +34,12 @@ functions:
     events:
       - http:
           path: miscelanea/verify-date-room
+          method: post
+          cors: true
+  CreateDateRoom:
+    handler: handler.createDateRoom
+    events:
+      - http:
+          path: miscelanea/create-date-room
           method: post
           cors: true

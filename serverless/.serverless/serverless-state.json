@@ -8,6 +8,7 @@
       "stage": "dev",
       "variableSyntax": "\\${([ ~:a-zA-Z0-9._@'\",\\-\\/\\(\\)*?]+?)}",
       "name": "aws",
+      "apiName": "Miscelanea",
       "runtime": "nodejs12.x",
       "region": "us-east-1",
       "environment": {
@@ -92,6 +93,12 @@
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
               "LogGroupName": "/aws/lambda/miscelanea-dev-VerifyDateRoom"
+            }
+          },
+          "CreateDateRoomLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/miscelanea-dev-CreateDateRoom"
             }
           },
           "IamRoleLambdaExecution": {
@@ -180,7 +187,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/miscelanea/dev/1578069082771-2020-01-03T16:31:22.771Z/miscelanea.zip"
+                "S3Key": "serverless/miscelanea/dev/1578349649562-2020-01-06T22:27:29.562Z/miscelanea.zip"
               },
               "FunctionName": "miscelanea-dev-VerifyDateRoom",
               "Handler": "handler.verifyDateRoom",
@@ -205,20 +212,62 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "VerifyDateRoomLambdaVersionwkp88JBbv3QGq5DAu75TaAIOQ1xutyQLH8i2luhU7g": {
+          "VerifyDateRoomLambdaVersion3aXusBNcIwQ2JOnlxMqDr5vmUL8hsQo5koqqd3glUc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "VerifyDateRoomLambdaFunction"
               },
-              "CodeSha256": "HgNgaBYDfn3oBtLKS56+Xgo4A9Fh3iXcd0eLi0cRJn8="
+              "CodeSha256": "qVhazuwdUKCnzXyqOKNhu3EC4By3A1Adh/vxMPn2KGY="
+            }
+          },
+          "CreateDateRoomLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/miscelanea/dev/1578349649562-2020-01-06T22:27:29.562Z/miscelanea.zip"
+              },
+              "FunctionName": "miscelanea-dev-CreateDateRoom",
+              "Handler": "handler.createDateRoom",
+              "MemorySize": 1024,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "REGION": "us-east-1",
+                  "DYNAMODB_TABLE_DATE": "DateRoom"
+                }
+              }
+            },
+            "DependsOn": [
+              "CreateDateRoomLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "CreateDateRoomLambdaVersionmXJ9BjCPBfskPTBKl6HArIJ8QhjV6PUs8rNR6kUs44": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateDateRoomLambdaFunction"
+              },
+              "CodeSha256": "qVhazuwdUKCnzXyqOKNhu3EC4By3A1Adh/vxMPn2KGY="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-miscelanea",
+              "Name": "Miscelanea",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -248,6 +297,18 @@
                 "Ref": "ApiGatewayResourceMiscelanea"
               },
               "PathPart": "verify-date-room",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceMiscelaneaCreateDashdateDashroom": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceMiscelanea"
+              },
+              "PathPart": "create-date-room",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -300,6 +361,53 @@
               }
             }
           },
+          "ApiGatewayMethodMiscelaneaCreateDashdateDashroomOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true,
+                    "method.response.header.Access-Control-Allow-Credentials": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                      "method.response.header.Access-Control-Allow-Credentials": "'false'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".*\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceMiscelaneaCreateDashdateDashroom"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
           "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -343,7 +451,50 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1578069067010": {
+          "ApiGatewayMethodMiscelaneaCreateDashdateDashroomPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceMiscelaneaCreateDashdateDashroom"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateDateRoomLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1578349634208": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -353,7 +504,9 @@
             },
             "DependsOn": [
               "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomOptions",
-              "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomPost"
+              "ApiGatewayMethodMiscelaneaCreateDashdateDashroomOptions",
+              "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomPost",
+              "ApiGatewayMethodMiscelaneaCreateDashdateDashroomPost"
             ]
           },
           "VerifyDateRoomLambdaPermissionApiGateway": {
@@ -362,6 +515,43 @@
               "FunctionName": {
                 "Fn::GetAtt": [
                   "VerifyDateRoomLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateDateRoomLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "CreateDateRoomLambdaFunction",
                   "Arn"
                 ]
               },
@@ -403,7 +593,13 @@
           "VerifyDateRoomLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "VerifyDateRoomLambdaVersionwkp88JBbv3QGq5DAu75TaAIOQ1xutyQLH8i2luhU7g"
+              "Ref": "VerifyDateRoomLambdaVersion3aXusBNcIwQ2JOnlxMqDr5vmUL8hsQo5koqqd3glUc"
+            }
+          },
+          "CreateDateRoomLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreateDateRoomLambdaVersionmXJ9BjCPBfskPTBKl6HArIJ8QhjV6PUs8rNR6kUs44"
             }
           },
           "ServiceEndpoint": {
@@ -541,14 +737,51 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {}
+      },
+      "CreateDateRoom": {
+        "handler": "handler.createDateRoom",
+        "events": [
+          {
+            "http": {
+              "path": "miscelanea/create-date-room",
+              "method": "post",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "miscelanea-dev-CreateDateRoom",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {}
       }
     },
     "serviceFilename": "serverless.yml",
     "layers": {},
-    "artifact": "C:\\Users\\cortizp\\genommaDEVS\\miscelanea\\serverless\\.serverless\\miscelanea.zip"
+    "artifact": "C:\\Users\\cortizp\\genommaDEVS\\ScheduleAdmin\\serverless\\.serverless\\miscelanea.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/miscelanea/dev/1578069082771-2020-01-03T16:31:22.771Z",
+    "artifactDirectoryName": "serverless/miscelanea/dev/1578349649562-2020-01-06T22:27:29.562Z",
     "artifact": "miscelanea.zip"
   }
 }
