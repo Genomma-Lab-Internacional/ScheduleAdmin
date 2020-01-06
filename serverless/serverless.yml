@@ -1,0 +1,37 @@
+
+service: miscelanea
+
+plugins:
+  - serverless-plugin-include-dependencies
+
+package:
+  exclude:
+    - node_modules/**
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-1
+  environment:
+    REGION: us-east-1
+    DYNAMODB_TABLE_DATE: DateRoom 
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:GetItem"
+        - "dynamodb:Scan"
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.environment.REGION}:*:table/${self:provider.environment.DYNAMODB_TABLE_DATE}"
+
+functions:
+  VerifyDateRoom:
+    handler: handler.verifyDateRoom
+    events:
+      - http:
+          path: miscelanea/verify-date-room
+          method: post
+          cors: true
