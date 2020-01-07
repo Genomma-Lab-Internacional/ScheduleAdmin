@@ -68,6 +68,12 @@
         "LogGroupName": "/aws/lambda/miscelanea-dev-CreateDateRoom"
       }
     },
+    "CancelDateRoomLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/miscelanea-dev-CancelDateRoom"
+      }
+    },
     "IamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -163,7 +169,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/miscelanea/dev/1578349649562-2020-01-06T22:27:29.562Z/miscelanea.zip"
+          "S3Key": "serverless/miscelanea/dev/1578420613379-2020-01-07T18:10:13.379Z/miscelanea.zip"
         },
         "FunctionName": "miscelanea-dev-VerifyDateRoom",
         "Handler": "handler.verifyDateRoom",
@@ -188,14 +194,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "VerifyDateRoomLambdaVersion3aXusBNcIwQ2JOnlxMqDr5vmUL8hsQo5koqqd3glUc": {
+    "VerifyDateRoomLambdaVersionGaVxide8OgnkxMS7z36EHXvb8zma9np61swmpjEJlE": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "VerifyDateRoomLambdaFunction"
         },
-        "CodeSha256": "qVhazuwdUKCnzXyqOKNhu3EC4By3A1Adh/vxMPn2KGY="
+        "CodeSha256": "CIqYghmglPqNKgbF98GHnx1N5q3wO0Bo6AmA6AkEf3w="
       }
     },
     "CreateDateRoomLambdaFunction": {
@@ -205,7 +211,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/miscelanea/dev/1578349649562-2020-01-06T22:27:29.562Z/miscelanea.zip"
+          "S3Key": "serverless/miscelanea/dev/1578420613379-2020-01-07T18:10:13.379Z/miscelanea.zip"
         },
         "FunctionName": "miscelanea-dev-CreateDateRoom",
         "Handler": "handler.createDateRoom",
@@ -230,14 +236,56 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "CreateDateRoomLambdaVersionmXJ9BjCPBfskPTBKl6HArIJ8QhjV6PUs8rNR6kUs44": {
+    "CreateDateRoomLambdaVersiondq5RThrOV0hQDOEzOl3Ck2XZWBtzjNscRjbG8W2GoLo": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateDateRoomLambdaFunction"
         },
-        "CodeSha256": "qVhazuwdUKCnzXyqOKNhu3EC4By3A1Adh/vxMPn2KGY="
+        "CodeSha256": "CIqYghmglPqNKgbF98GHnx1N5q3wO0Bo6AmA6AkEf3w="
+      }
+    },
+    "CancelDateRoomLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/miscelanea/dev/1578420613379-2020-01-07T18:10:13.379Z/miscelanea.zip"
+        },
+        "FunctionName": "miscelanea-dev-CancelDateRoom",
+        "Handler": "handler.cancelDateRoom",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "REGION": "us-east-1",
+            "DYNAMODB_TABLE_DATE": "DateRoom"
+          }
+        }
+      },
+      "DependsOn": [
+        "CancelDateRoomLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "CancelDateRoomLambdaVersionJ1d3nUHHrjMbluBeMe3a6bOxGJRbEAeoxnW3B5Fs9A": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "CancelDateRoomLambdaFunction"
+        },
+        "CodeSha256": "CIqYghmglPqNKgbF98GHnx1N5q3wO0Bo6AmA6AkEf3w="
       }
     },
     "ApiGatewayRestApi": {
@@ -285,6 +333,18 @@
           "Ref": "ApiGatewayResourceMiscelanea"
         },
         "PathPart": "create-date-room",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceMiscelaneaCancelDashdateDashroom": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceMiscelanea"
+        },
+        "PathPart": "cancel-date-room",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -384,6 +444,53 @@
         }
       }
     },
+    "ApiGatewayMethodMiscelaneaCancelDashdateDashroomOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Credentials": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "method.response.header.Access-Control-Allow-Credentials": "'false'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".*\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMiscelaneaCancelDashdateDashroom"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
     "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -470,7 +577,50 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1578349634208": {
+    "ApiGatewayMethodMiscelaneaCancelDashdateDashroomPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceMiscelaneaCancelDashdateDashroom"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "CancelDateRoomLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1578420596869": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -481,8 +631,10 @@
       "DependsOn": [
         "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomOptions",
         "ApiGatewayMethodMiscelaneaCreateDashdateDashroomOptions",
+        "ApiGatewayMethodMiscelaneaCancelDashdateDashroomOptions",
         "ApiGatewayMethodMiscelaneaVerifyDashdateDashroomPost",
-        "ApiGatewayMethodMiscelaneaCreateDashdateDashroomPost"
+        "ApiGatewayMethodMiscelaneaCreateDashdateDashroomPost",
+        "ApiGatewayMethodMiscelaneaCancelDashdateDashroomPost"
       ]
     },
     "VerifyDateRoomLambdaPermissionApiGateway": {
@@ -558,6 +710,43 @@
           ]
         }
       }
+    },
+    "CancelDateRoomLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "CancelDateRoomLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -569,13 +758,19 @@
     "VerifyDateRoomLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "VerifyDateRoomLambdaVersion3aXusBNcIwQ2JOnlxMqDr5vmUL8hsQo5koqqd3glUc"
+        "Ref": "VerifyDateRoomLambdaVersionGaVxide8OgnkxMS7z36EHXvb8zma9np61swmpjEJlE"
       }
     },
     "CreateDateRoomLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateDateRoomLambdaVersionmXJ9BjCPBfskPTBKl6HArIJ8QhjV6PUs8rNR6kUs44"
+        "Ref": "CreateDateRoomLambdaVersiondq5RThrOV0hQDOEzOl3Ck2XZWBtzjNscRjbG8W2GoLo"
+      }
+    },
+    "CancelDateRoomLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "CancelDateRoomLambdaVersionJ1d3nUHHrjMbluBeMe3a6bOxGJRbEAeoxnW3B5Fs9A"
       }
     },
     "ServiceEndpoint": {

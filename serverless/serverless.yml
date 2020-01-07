@@ -43,3 +43,10 @@ functions:
           path: miscelanea/create-date-room
           method: post
           cors: true
+  CancelDateRoom:
+    handler: handler.cancelDateRoom
+    events:
+      - http:
+          path: miscelanea/cancel-date-room
+          method: post
+          cors: true

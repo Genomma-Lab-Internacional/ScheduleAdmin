@@ -1,22 +1,24 @@
-import React from "react"
+import React, { useState } from "react"
 
-export default function Index () {
-    
-    const data = (e) => {
-        console.log(e.target.name,e.target.value)
-    }
+export default function Index (props) {
+	const [ user ] = useState({})
 
-    const sendDataToServer = () => {
+	const data = e => user[e.target.name] = e.target.value
 
-    }
+	const sendDataToServer = ( ) => {
+		props.history.push("/schedule-rooms")
+	}
 
-    return (
-        <div>
-            <input onChange={data} type="text" name="employee" placeholder="Ingresa tu nombre"/>
-            <br/>
-            <input onChange={data} type="text" name="numEmployee" placeholder="Ingresa tu numero de empleado"/>
-            <br/>
-            <button onClick= {sendDataToServer}  >Enviar</button>
-        </div>
-    )
+	const cancelDate = ( ) => {
+		props.history.push(`/cancel-schedule-rooms/${user["numEmployee"]}`)
+	}
+
+	return (
+		<div>
+			<input onChange={data} type="text" name="numEmployee" placeholder="Ingresa tu numero de empleado"/>
+			<br/>
+			<button onClick={sendDataToServer} >Reserva Sala</button>
+			<button onClick={cancelDate}>Cancela Sala</button>
+		</div>
+	)
 }
